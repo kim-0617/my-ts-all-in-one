@@ -14,6 +14,8 @@ const j: {} = 5;
 //     return x + y 
 // }
 
+const arrowFunc : (x:number, y:number) => number = (x,y) => x + y;
+
 // 타입 앨리어스
 // type Add = (x: number, y: number) => number
 
@@ -34,8 +36,8 @@ const arr2: Array<number> = [123, 456];
 const arr3: [number, number, string] = [123, 456, 'abc',];
 
 // 타입과 로직의 분리
-function sep(x: number, y: number): number;
-function sep(x, y) {
+function Sep(x: number, y: number): number;
+function Sep(x, y) {
     return x + y;
 }
 
@@ -135,3 +137,10 @@ interface B extends Ani {
 }
 
 const zeroCho2: B = { breath: true, breed: true };
+
+// declare
+declare function ForEach(arr: number[], callback : (el:number) => void) : void;
+// return 값이 아닌 콜백의 return 값의 void의 의미는 리턴값이 뭐든 상관하지 않겠다는 의미
+
+let target:number[] = [];
+ForEach(target, el => target.push(el));
