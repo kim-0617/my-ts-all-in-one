@@ -144,3 +144,33 @@ declare function ForEach(arr: number[], callback : (el:number) => void) : void;
 
 let target:number[] = [];
 ForEach(target, el => target.push(el));
+
+// type guard
+function numOrStr(a : number | string) {
+    (a as number).toFixed(1); // 웬만하면 as는 쓰지않는다
+}
+
+function numOrStr2(a : number | string) {
+    if(typeof a === 'number') {
+        a.toFixed(1);
+    }
+    if(typeof a === 'string') {
+        a.charAt(3);
+    }
+}
+
+// 클래스 타입
+class C1 {
+    ccc() {};
+}
+
+class C2 {
+    ccc2() {};
+}
+
+function oneOrTwo(A : C1 | C2) {
+
+}
+
+oneOrTwo(C1);
+oneOrTwo(new C2());
