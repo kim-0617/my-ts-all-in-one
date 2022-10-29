@@ -174,3 +174,103 @@ function oneOrTwo(A : C1 | C2) {
 
 oneOrTwo(C1);
 oneOrTwo(new C2());
+
+// 커스텀 타입가드
+interface Dog {bow : string}
+interface Cat {meow : string}
+function catOrDog(a : Dog | Cat) : a is Dog {
+    if((a as Cat).meow) {
+        return false;
+    }
+
+    return true;
+}
+
+function pet(a : Cat | Dog) {
+    if(catOrDog(a)) {
+        console.log(a.bow);
+    }
+    if('meow' in a) {
+        console.log(a.meow);
+    }
+}
+
+// 인덱스드 시그니쳐
+type Sig = {[key:string] : string};
+const indexSig : Sig = {a : 123, b : "123"};
+
+// 맵드 타입스
+type Maped = 'Human' | 'Mammal' | 'Animal';
+type MapedType = {[key in Maped] : string};
+const MapedTypes : MapedType = {Mammal : "abc", Human : "being", Animal : "you"};
+
+// 옵셔널
+function opt(a:number, b?:number, c?:number) {}
+opt(1);
+opt(1, 2);
+opt(1, 2, 3);
+opt(1, 2, 3, 4);
+
+// 제네릭 : 함수의 타입을 사용할 때 결정하겠다
+function generic<T extends number | string>(x : T, y : T) : T {
+    return x + y;
+}
+
+generic(1,2);
+generic('1', 2);
+generic('1','2');
+
+interface Array<T> {
+    filter<S extends string | number>(predicate: (value: string | number, index: number, array: string | number[]) => value is S, thisArg?: any): S[];
+}
+const filtered = ['1',2,'3'].filter(x => typeof x === 'string');
+
+
+// forEach 타입 만들기
+interface Arr<T> {
+    forEach(callback : (value : T) => void) : void;
+    map<S>(callback : (value : T) => S) : S[];
+    filter<B extends T>(callback : (value : T) => value is B) : B[];
+}
+
+const testArr: Arr<number> = [1,2,3];
+testArr.forEach((value) => {
+    value.toFixed();
+});
+
+const testArr2: Arr<string> = ['1','2','3'];
+testArr2.forEach((value) => {
+    value.charAt(3);
+});
+
+const testArr3: Arr<boolean> = [true, false];
+testArr3.forEach((value) => {
+    console.log(value);
+});
+
+const testArr4: Arr<string|number> = ['1',2,'3'];
+testArr4.forEach((value) => {
+    console.log(value);
+});
+
+// map 타입 만들기
+const mapReturn = testArr.map((value) => {
+    return value;
+});
+
+const mapReturn2 = testArr.map((value) => {
+    return value.toString();
+});
+
+const mapReturn3 = testArr.map((value) => {
+    return value % 2 === 0;
+});
+
+// filter 타입 만들기
+const filterReturn = testArr.filter((value) : value is number => {
+    return value === 1;
+});
+
+const filterReturn2 = testArr4.filter((value) : value is string => {
+    return typeof value === 'string';
+});
