@@ -274,3 +274,18 @@ const filterReturn = testArr.filter((value) : value is number => {
 const filterReturn2 = testArr4.filter((value) : value is string => {
     return typeof value === 'string';
 });
+
+// 공변성, 반공변성
+function big(x : string) : number{
+    return +x;
+}
+type bigType = (x : string) => number | string;
+const bigFunc : bigType = big; // return 값이 더 넓은 타입에 대입이 가능하다. 그 반대는 불가능
+
+// 매개변수는 좁은 타입 상관없이 대입이 된다.
+// 그러나 여기서 숫자를 매개변수로 설정하면 오류.. 무슨의미가있나?
+function big2(x : string | number) : number {
+    return +x;
+}
+type bigType2 = (x : string) => number | string;
+const bigFunc2 : bigType2 = big2;
